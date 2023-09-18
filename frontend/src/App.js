@@ -1,28 +1,56 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as  Router,Route, Routes, Navigate, Outlet } from "react-router-dom";
 import Main from "./components/Main";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Problem from "./components/Problems/problemList";
-import Error from "./components/Error/error"
+import Error from "./components/Error/error";
+import About from "./components/About/about";
+
+
+const AppLayout = ({ children }) => {
+  return (
+    <>
+      {children}
+    </>
+  );
+}
 
 function App() {
   const user = localStorage.getItem("token");
 
   return (
-    <Routes>
-      {user ? (
-        <>
-          <Route path="/" exact element={<Main />} />
-          <Route path="/add-problem" exact element={<Problem />} />
-        </>
-      ) : (
-        <Route path="/" element={<Navigate replace to="/login" />} />
-      )}
-      <Route path="/signup" exact element={<Signup />} />
-      <Route path="/login" exact element={<Login />} />
-      <Route path="*" element={<Error />} /> //Wrong route
-    </Routes>
+    // <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            user ? (
+              <AppLayout>
+                <Main /> {/* Render Main component here to make it common */}
+                <Outlet />
+              </AppLayout>
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }
+        >
+          {/* <Route index element={<Main />} /> This created two Main */}
+          <Route path="add-problem" element={<Problem />} />
+          <Route path="about" element={<About />} />
+          {/* To add more child  routes here */}
+          
+        </Route>
+
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Error />} />
+
+        
+      </Routes>
+   
   );
 }
+
+
 
 export default App;

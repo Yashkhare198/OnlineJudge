@@ -22,7 +22,7 @@ function ProblemForm() {
       const response = await axios.post('http://localhost:8080/api/problems', formData);
       // Check the response status to see if it was successful
       if (response.status === 201) {
-        // Handle success (e.g., show a success message)
+        // show a success message
         console.log('Data sent successfully');
         setError(null); // Clear any previous error message
       } else {
