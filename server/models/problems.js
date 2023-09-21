@@ -23,7 +23,7 @@ const problemSchema = new mongoose.Schema({
   },
   level: {
     type: String,
-    enum: ['easy', 'medium', 'hard'], // To restrict to specific values
+    enum: ['Easy', 'Medium', 'Hard'], // To restrict to specific values
     required: true,
   },
 });

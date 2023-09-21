@@ -1,10 +1,11 @@
-import { BrowserRouter as  Router,Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import Main from "./components/Main";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Problem from "./components/Problems/problemList";
 import Error from "./components/Error/error";
 import About from "./components/About/about";
+import ProblemTable from "./components/Problems/ProblemTable";
 
 
 const AppLayout = ({ children }) => {
@@ -37,6 +38,7 @@ function App() {
           {/* <Route index element={<Main />} /> This created two Main */}
           <Route path="add-problem" element={<Problem />} />
           <Route path="about" element={<About />} />
+          <Route path="problem-table" element={<ProblemTable />} />
           {/* To add more child  routes here */}
           
         </Route>
@@ -47,7 +49,7 @@ function App() {
 
         
       </Routes>
-   
+    // </Router>
   );
 }
 
