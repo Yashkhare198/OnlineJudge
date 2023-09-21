@@ -1,19 +1,29 @@
-
-
 const mongoose = require('mongoose');
 
-
 const problemSchema = new mongoose.Schema({
-  problemId: {
+  problemNo: {
+    type: String,
+    required: true,
+    trim: true, //If true it removes leading and trailing whitespaces 
+  },
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    
+  },
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  testCases: {
     type: String,
     required: true,
   },
-  problemTitle: {
+  level: {
     type: String,
-    required: true,
-  },
-  difficulty: {
-    type: String,
+    enum: ['easy', 'medium', 'hard'], // To restrict to specific values
     required: true,
   },
 });

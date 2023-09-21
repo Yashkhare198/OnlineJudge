@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import styles from './styles.module.css';
 
 const Main = () => {
     const handleLogout = () => {
@@ -9,33 +8,17 @@ const Main = () => {
     }
 
     return (
-        <div className={styles.main_container}>
-            <nav className={styles.navbar}>
-                <h1>CodeHub</h1>
-                <div className={styles.nav_buttons}>
-                 
-                    <Link to ="/">
-                    <button className={styles.white_btn}>
-                       Home
-                    </button>
-                    </Link>
-                    
-                    <Link to="/add-problem">
-                    <button className={styles.white_btn}>
-                        Problem
-                    </button>
-                    </Link>
-
-                    <Link to ="/about">
-                    <button className={styles.white_btn}>
-                        About
-                    </button>
-                    </Link>
-
-                    <button className={styles.red_btn} onClick={handleLogout}>
-                        Logout
-                    </button>
+        <div className="bg-gray-900 text-white">
+            <nav className="container mx-auto py-4 flex justify-between items-center">
+                <h1 className="text-3xl font-semibold">CodeHub</h1>
+                <div className="space-x-4 md:space-x-8">
+                    <Link to="/" className="text-white hover:text-gray-400">Home</Link>
+                    <Link to="/add-problem" className="text-white hover:text-gray-400">Add-Problem</Link>
+                    <Link to="/about" className="text-white hover:text-gray-400">About</Link>
                 </div>
+                <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onClick={handleLogout}>
+                    Logout
+                </button>
             </nav>
         </div>
     )

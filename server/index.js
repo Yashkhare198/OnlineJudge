@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 //routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/problems', problemRoutes); // Use the problems route
+app.use('/api/add-problems', problemRoutes); // Use the problems route
 
 
 
