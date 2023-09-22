@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const ProblemTable = () => {
@@ -76,13 +77,15 @@ const ProblemTable = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {problems.map((problem) => (
-            <tr key={problem._id}>
-              <td className="px-6 py-4 whitespace-no-wrap">{problem.problemNo}</td>
-              <td className="px-6 py-4 whitespace-no-wrap">{problem.title}</td>
-              <td className="px-6 py-4 whitespace-no-wrap">{problem.level}</td>
-            </tr>
-          ))}
+        {problems.map((problem) => (
+  <tr key={problem._id}>
+    <td className="px-6 py-4 whitespace-no-wrap">
+      <Link to={`/problem/${problem.problemNo}`}>{problem.problemNo}</Link>
+    </td>
+    <td className="px-6 py-4 whitespace-no-wrap">{problem.title}</td>
+    <td className="px-6 py-4 whitespace-no-wrap">{problem.level}</td>
+  </tr>
+))}
         </tbody>
       </table>
     </div>
