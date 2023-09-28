@@ -4,6 +4,7 @@ import React from 'react';
 const Main = () => {
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
         window.location.reload();
     }
 

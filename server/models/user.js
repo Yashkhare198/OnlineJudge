@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  problems: [{type: mongoose.Types.ObjectId,required:true,ref:"Problem"}] //problem array
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -16,6 +17,7 @@ userSchema.methods.generateAuthToken = function () {
   });
   return token;
 };
+
 
 const User = mongoose.model("user", userSchema);
 
@@ -30,3 +32,5 @@ const validate = (data) => {
 };
 
 module.exports = { User, validate };
+
+

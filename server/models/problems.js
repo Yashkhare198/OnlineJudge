@@ -1,16 +1,17 @@
+// model.js
+
 const mongoose = require('mongoose');
 
 const problemSchema = new mongoose.Schema({
   problemNo: {
-    type: String,
+    type: Number,
     required: true,
-    trim: true, //If true it removes leading and trailing whitespaces 
+    unique: true, // Ensure problem numbers are unique
   },
   title: {
     type: String,
     required: true,
     trim: true,
-    
   },
   description: {
     type: String,
@@ -23,11 +24,15 @@ const problemSchema = new mongoose.Schema({
   },
   level: {
     type: String,
-    enum: ['Easy', 'Medium', 'Hard'], // To restrict to specific values
+    enum: ['Easy', 'Medium', 'Hard'],
     required: true,
   },
+  creator: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
 });
-
 
 const Problem = mongoose.model('Problem', problemSchema);
 
