@@ -9,7 +9,7 @@ const Main = () => {
     useEffect(() => {
         // Implement a dynamic text change after a delay
         const textChangeInterval = setInterval(() => {
-            setDynamicText("Solve challenges, compete, and excel!");
+            setDynamicText("Solve problem, explore, and excel!");
         }, 2000);
 
         return () => {
@@ -29,8 +29,8 @@ const Main = () => {
         <div className="bg-gradient-to-br from-blue-300 to-blue-500 h-screen flex items-center">
             <div className="container mx-auto text-center text-white">
                 <div className="mb-8">
-                    <h1 className="text-6xl font-extrabold">Welcome to CodeHub</h1>
-                    <p className="text-2xl text-gray-300 mt-2">Your Ultimate Coding Challenge Platform</p>
+                    <h1 className="text-6xl font-extrabold ">Welcome to CodeHub</h1>
+                    <p className="text-2xl text-gray-300 mt-2">Your Ultimate Coding  Platform</p>
                 </div>
 
                 
