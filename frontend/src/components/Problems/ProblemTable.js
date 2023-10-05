@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const ProblemTable = () => {
+  const user = localStorage.getItem("userId");
   const [problems, setProblems] = useState([]);
   const [sortedProblems, setSortedProblems] = useState([]);
   const [sortBy, setSortBy] = useState('problemNo');
@@ -10,14 +11,16 @@ const ProblemTable = () => {
 
   useEffect(() => {
     // Fetch data from the server when the component mounts
-    axios
-      .get('http://localhost:8080/api/problems')
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/problems');
         setProblems(response.data.problems);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching data:', error);
-      });
+      }
+    };
+
+    fetchData();
   }, []); // The empty dependency array ensures this effect runs only once
 
   useEffect(() => {
@@ -63,14 +66,26 @@ const ProblemTable = () => {
     }
   };
 
+  if (problems.length === 0) {
+    return (
+      <div className="max-w-screen-lg mx-auto p-6">
+        <div className="bg-white py-8 px-10 rounded-lg shadow-lg text-center">
+          <h2 className="text-2xl font-bold mb-4 text-indigo-800">
+            Loading...
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-screen-lg mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Problem Table</h2>
-      <table className="min-w-full divide-y divide-gray-200">
+      <h2 className="text-3xl font-extrabold mb-4 text-indigo-800">Problem Table</h2>
+      <table className="min-w-full divide-y divide-gray-300">
         <thead>
           <tr>
             <th
-              className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+              className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-semibold text-indigo-700 uppercase cursor-pointer"
               onClick={() => handleSort('problemNo')}
             >
               Problem No.
@@ -81,7 +96,7 @@ const ProblemTable = () => {
               )}
             </th>
             <th
-              className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+              className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-semibold text-indigo-700 uppercase cursor-pointer"
               onClick={() => handleSort('title')}
             >
               Title
@@ -92,7 +107,7 @@ const ProblemTable = () => {
               )}
             </th>
             <th
-              className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+              className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-semibold text-indigo-700 uppercase cursor-pointer"
               onClick={() => handleSort('level')}
             >
               Difficulty
@@ -102,22 +117,24 @@ const ProblemTable = () => {
                 </span>
               )}
             </th>
-            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-semibold text-indigo-700 uppercase">
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white divide-y divide-gray-300">
           {sortedProblems.map((problem) => (
             <tr key={problem._id}>
               <td className="px-6 py-4 whitespace-no-wrap">
-                <Link to={`/problem/${problem.problemNo}`}>{problem.problemNo}</Link>
+                <Link to={`/problem/${problem.problemNo}`} className="text-indigo-600 hover:underline">
+                  {problem.problemNo}
+                </Link>
               </td>
               <td className="px-6 py-4 whitespace-no-wrap">{problem.title}</td>
               <td className="px-6 py-4 whitespace-no-wrap">{problem.level}</td>
               <td className="px-6 py-4 whitespace-no-wrap">
-                {problem.creator === localStorage.getItem("userId") && (
-                  <Link to={`/edit/problem/${problem.problemNo}`} className="text-blue-600 hover:underline">
+                {problem.creator === user && (
+                  <Link to={`/edit/problem/${problem.problemNo}`} className="text-indigo-600 hover:underline">
                     Edit
                   </Link>
                 )}

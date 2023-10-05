@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -5,9 +6,6 @@ import axios from 'axios';
 const EditProblemForm = () => {
   const { problemNo } = useParams();
   const navigate = useNavigate();
-  
-
-  
 
   const [problem, setProblem] = useState({
     title: '',
@@ -23,8 +21,7 @@ const EditProblemForm = () => {
     axios
       .get(`http://localhost:8080/api/problems`)
       .then((response) => {
-      
-        const specificProblem = response.data.problems.find((x) => x.problemNo === (parseInt(problemNo)));
+        const specificProblem = response.data.problems.find((x) => x.problemNo === parseInt(problemNo));
 
         if (specificProblem) {
           // Set the problem state with the initial data
@@ -37,19 +34,16 @@ const EditProblemForm = () => {
         } else {
           console.error(`Problem with problemNo ${problemNo} not found`);
         }
-       
       })
       .catch((error) => {
         console.error('Error fetching problem details:', error);
       });
   }, [problemNo]);
 
- 
-
   const handleEditProblem = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:8080/api/problems/${problemNo}`, // Include problemNo in the URL
+        `http://localhost:8080/api/problems/${problemNo}`,
         problem
       );
 
@@ -57,8 +51,12 @@ const EditProblemForm = () => {
         console.log('Problem updated successfully');
         setError(null);
         setSuccess(true);
-        // Redirect to the problem detail page or any other appropriate page
-        navigate(`/problem/${problemNo}`);
+
+        
+       
+          navigate(`/problem/${problemNo}`);
+          
+    
       } else {
         setError('Error updating problem');
       }
@@ -67,7 +65,7 @@ const EditProblemForm = () => {
       setError('Error updating problem');
     }
   };
-
+  
   return (
     <div className="w-full max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Edit Problem</h2>

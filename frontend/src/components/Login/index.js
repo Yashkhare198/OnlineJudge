@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
 import axios from 'axios';
 import styles from "./styles.module.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -22,8 +23,18 @@ const Login = () => {
     try {
       const url = "http://localhost:8080/api/auth";
       const { data: res } = await axios.post(url, data);
+      
+      // localStorage.setItem("userData",JSON.stringify({"token":res.data,"userId":res.userId}));
       localStorage.setItem("token",res.data);
-      window.location="/";
+      localStorage.setItem("userId",res.userId);
+      const storedProblemNo = localStorage.getItem('redirectProblemNo');
+    if (storedProblemNo) {
+      navigate(`/problem/${storedProblemNo}`);
+      localStorage.removeItem('redirectProblemNo'); // Clear the stored problem number
+    }
+    else{
+      navigate("/"); // Use navigate to go to the homepage
+    }
     
       console.log(res.message);
     } catch (error) {
@@ -63,7 +74,7 @@ const Login = () => {
               className={styles.input}
             />
             {error && <div className={styles.error_msg}>{error}</div>}
-            <button type="submit" className={styles.green_btn}>
+            <button type="submit" className={styles.black_btn}>
               Sign In
             </button>
           </form>

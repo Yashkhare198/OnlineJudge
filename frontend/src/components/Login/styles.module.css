@@ -66,7 +66,8 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background-color: #3bb19b;
+	/* background-color: #3bb19b; */
+	background-color: black;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
@@ -79,7 +80,7 @@
 }
 
 .white_btn,
-.green_btn {
+.black_btn {
 	border: none;
 	outline: none;
 	padding: 12px 0;
@@ -91,8 +92,8 @@
 	cursor: pointer;
 }
 
-.green_btn {
-	background-color: #3bb19b;
+.black_btn {
+	background-color:black;
 	color: white;
 	margin: 10px;
 }
