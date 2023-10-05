@@ -9,7 +9,7 @@ const Main = () => {
     useEffect(() => {
         // Implement a dynamic text change after a delay
         const textChangeInterval = setInterval(() => {
-            setDynamicText("Solve problem, explore, and excel!");
+            setDynamicText("Solve problems, explore, and excel!");
         }, 2000);
 
         return () => {
