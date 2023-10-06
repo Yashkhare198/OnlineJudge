@@ -21,9 +21,9 @@ const runProgram = async (req, res, next) => {
         //   const error = new HttpError("Failed to run the code", 500);
         //   return next(error);
         // }
-        console.log(output);
+        
 
-        res.status(200).json({ filePath, output });
+        res.status(200).json({output});
       }
     } catch (err) {
       console.error(err);

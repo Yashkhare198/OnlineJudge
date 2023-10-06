@@ -22,7 +22,7 @@ const ProblemDetail = () => {
     // Fetch problem details when problemNo changes
     const fetchProblemDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/problems`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_PATH}/api/problems`);
         const specificProblem = response.data.problems.find(
           (x) => x.problemNo === parseInt(problemNo)
         );
@@ -56,7 +56,7 @@ const ProblemDetail = () => {
       navigate('/login');
     } else {
       try {
-        const response = await axios.post('http://localhost:5001/api/execution/run', {
+        const response = await axios.post(`${process.env.REACT_APP_COMPILER_PATH}/api/execution/run`, {
           language: 'cpp',
           input,
           code,

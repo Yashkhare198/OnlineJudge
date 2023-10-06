@@ -34,4 +34,4 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred." });
 });
 
-app.listen(5001);
+app.listen(5001, console.log("Compiler server is running on 5001..."));

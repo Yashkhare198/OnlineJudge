@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  server:
+    build: ./server
+    container_name: ojserver_c
+    ports:
+      - 8080:8080
+#   volumes:
+# ./server:/app
+# /app/node_modules
+
+  frontend:
+    build: ./frontend
+    container_name: ojfrontend_c
+    ports:
+      - 3000:3000
+# volumes:#   - ./frontend:/app#   - /app/node_modules# stdin_open: true# tty: true# depends_on:#   - server
+
+  compiler:
+    build: ./compiler
+    container_name: ojcompiler_c
+    ports:
+      - 5001:5001
+#   volumes:
+# ./compiler:/app
+# /app/node_modules
+
+
+

@@ -2,26 +2,23 @@ const { exec } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-
-
 const outputPath = path.join(__dirname, "outputs");
 
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
 
-
-const appendCustomInput = async (path, data) => {
+const appendCustomInput = async (filePath, data) => {
   try {
-    fs.appendFile(path, data, (err) => {
-      if (err)
+    fs.appendFile(filePath, data, (err) => {
+      if (err) {
         console.log(err);
+      }
     });
   } catch (error) {
     console.log(error);
   }
 };
-
 
 const executeCpp = (filepath, input) => {
   const jobId = path.basename(filepath).split(".")[0];
@@ -32,7 +29,8 @@ const executeCpp = (filepath, input) => {
   appendCustomInput(custominputpath, input); // Ensure 'input' is defined
 
   return new Promise((resolve, reject) => {
-    const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .\\${jobId}.exe < "${custominputpath}"`;
+    const separator = process.platform === "win32" ? "\\" : "/"; // Determine the correct path separator
+    const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .${separator}${jobId}.exe < "${custominputpath}"`;
 
     const childProcess = exec(command, (error, stdout, stderr) => {
       if (error) {
@@ -42,12 +40,11 @@ const executeCpp = (filepath, input) => {
       } else {
         console.log("Executing command: " + command);
         console.log("Output:");
-        process.stdout.write(stdout); // Flush the standard output immediately
+        process.stdout.write(stdout);
         resolve(stdout);
       }
     });
 
-    // Display any output from the child process as it arrives
     childProcess.stdout.on('data', (data) => {
       process.stdout.write(data);
     });

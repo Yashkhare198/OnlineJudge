@@ -43,7 +43,7 @@ const EditProblemForm = () => {
   const handleEditProblem = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:8080/api/problems/${problemNo}`,
+        `${process.env.REACT_APP_SERVER_PATH}/api/problems/${problemNo}`,
         problem
       );
 

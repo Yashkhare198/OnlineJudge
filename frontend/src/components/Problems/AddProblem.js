@@ -13,7 +13,7 @@ const AddProblemForm = () => {
   // Function to fetch the problem number
   const fetchProblemNumber = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/problems');
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_PATH}/api/problems`);
       setProblemNo(response.data.nextProblemNo);
     } catch (error) {
       console.error('Error fetching next problem number:', error);
@@ -32,7 +32,7 @@ const AddProblemForm = () => {
         creator: localStorage.getItem('userId'),
       };
 
-      const response = await axios.post('http://localhost:8080/api/problems', formData);
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_PATH}/api/problems`, formData);
 
       if (response.status === 201) {
         console.log('Data sent successfully');

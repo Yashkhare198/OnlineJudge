@@ -13,7 +13,7 @@ const ProblemTable = () => {
     // Fetch data from the server when the component mounts
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/problems');
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_PATH}/api/problems`);
         setProblems(response.data.problems);
       } catch (error) {
         console.error('Error fetching data:', error);
