@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const MainContent = () => {
     const navigate = useNavigate();
     const user = localStorage.getItem("userId");
+    const location = useLocation();
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -14,34 +15,42 @@ const MainContent = () => {
 
     return (
         <div className="bg-gray-900 text-white">
-            <nav className="container mx-auto py-4 flex justify-between items-center">
-                <h1 className="text-3xl font-semibold">CodeHub</h1>
-                <div className="space-x-4 md:space-x-8">
-                    <Link to="/" className="text-white hover:text-gray-400">Home</Link>
-                    <Link to="/problem-table" className="text-white hover:text-gray-400">Problems</Link>
+            <nav className="container mx-auto py-4 flex flex-col md:flex-row md:justify-between md:items-center">
+                <h1 className="text-3xl font-semibold text-center md:text-left">CodeHub</h1>
+                <div className="space-y-2 md:space-x-4 md:space-y-0 flex flex-col md:flex-row md:items-center">
+                    <NavLink to="/" active={location.pathname === '/'}>Home</NavLink>
+                    <NavLink to="/problem-table" active={location.pathname === '/problem-table'}>Problems</NavLink>
                     {user ? (
-                        <Link to="/add-problem" className="text-white hover:text-gray-400">
-                            Add-Problem
-                        </Link>
+                        <NavLink to="/add-problem" active={location.pathname === '/add-problem'}>
+                            Add Problem
+                        </NavLink>
                     ) : (
-                        <Link to="/login" className="text-white hover:text-gray-400">
-                            Add-Problem
-                        </Link>
+                        <NavLink to="/login" >
+                            Add Problem
+                        </NavLink>
                     )}
-                    <Link to="/about" className="text-white hover:text-gray-400">About</Link>
+                    <NavLink to="/about" active={location.pathname === '/about'}>About</NavLink>
                 </div>
                 {user ? (
-                    <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onClick={handleLogout}>
+                    <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mt-2 md:mt-0" onClick={handleLogout}>
                         Logout
                     </button>
                 ) : (
-                    <Link to="/login" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                    <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-white mt-2 md:mt-0" >
+                    <NavLink to="/login"  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-red-700 mt-2 md:mt-0">
                         Login
-                    </Link>
+                    </NavLink>
+                    </button>
                 )}
             </nav>
         </div>
     );
 };
+
+const NavLink = ({ to, active, children }) => (
+    <Link to={to} className={`text-white hover:text-yellow-400 ${active ? 'bg-violet-600' : ''} px-4 py-2 rounded`}>
+        {children}
+    </Link>
+);
 
 export default MainContent;

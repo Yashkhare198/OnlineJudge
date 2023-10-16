@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import styles from "./styles.module.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,9 +9,7 @@ const Login = () => {
     password: "",
   });
 
-  const[error,setError] =useState("");
-
-  
+  const [error, setError] = useState("");
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -23,20 +20,16 @@ const Login = () => {
     try {
       const url = `${process.env.REACT_APP_SERVER_PATH}/api/auth`;
       const { data: res } = await axios.post(url, data);
-      
-      // localStorage.setItem("userData",JSON.stringify({"token":res.data,"userId":res.userId}));
-      localStorage.setItem("token",res.data);
-      localStorage.setItem("userId",res.userId);
+
+      localStorage.setItem("token", res.data);
+      localStorage.setItem("userId", res.userId);
       const storedProblemNo = localStorage.getItem('redirectProblemNo');
-    if (storedProblemNo) {
-      navigate(`/problem/${storedProblemNo}`);
-      localStorage.removeItem('redirectProblemNo'); // Clear the stored problem number
-    }
-    else{
-      navigate("/"); // Use navigate to go to the homepage
-    }
-    
-      console.log(res.message);
+      if (storedProblemNo) {
+        navigate(`/problem/${storedProblemNo}`);
+        localStorage.removeItem('redirectProblemNo');
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       if (
         error.response &&
@@ -47,47 +40,52 @@ const Login = () => {
       }
     }
   };
+
   return (
-    <div className={styles.login_container}>
-      <div className={styles.login_form_container}>
-        <div className={styles.left}>
-        <form className={styles.form_container} onSubmit={handleSubmit}>
-            <h1>Login to your Account</h1>
-           
-           
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              onChange={handleChange}
-              value={data.email}
-              required
-              className={styles.input}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              onChange={handleChange}
-              value={data.password}
-              required
-              className={styles.input}
-            />
-            {error && <div className={styles.error_msg}>{error}</div>}
-            <button type="submit" className={styles.black_btn}>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="w-full sm:w-96 md:w-96 lg:w-3/4 xl:w-4/5 h-auto flex flex-col md:flex-row rounded-lg shadow-lg bg-white">
+        <div className="flex-1 p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h1 className="text-3xl font-semibold">Login to your Account</h1>
+            </div>
+            <div className="space-y-2">
+              <input
+                type="email"
+                placeholder="Email"
+                name="email"
+                onChange={handleChange}
+                value={data.email}
+                required
+                className="w-full p-4 rounded-lg bg-gray-200 focus:outline-none focus:ring focus:border-blue-300"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                onChange={handleChange}
+                value={data.password}
+                required
+                className="w-full p-4 rounded-lg bg-gray-200 focus:outline-none focus:ring focus:border-blue-300"
+              />
+            </div>
+            {error && (
+              <div className="p-4 rounded-lg bg-red-500 text-white text-center">
+                {error}
+              </div>
+            )}
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
               Sign In
             </button>
           </form>
-          
         </div>
-        <div className={styles.right}>
-        <h1>New Here ?</h1>
+        <div className="flex-1 p-6 bg-black text-white flex flex-col items-center justify-center">
+          <h1 className="text-3xl font-semibold text-center mb-4">New Here?</h1>
           <Link to="/signup">
-            <button type="button" className={styles.white_btn}>
+            <button type="button" className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring focus:ring-gray-300">
               Sign Up
             </button>
           </Link>
-         
         </div>
       </div>
     </div>

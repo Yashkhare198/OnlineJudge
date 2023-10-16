@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { Route, Routes,Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Main from "./components/Main";
 import Signup from "./components/Signup";
@@ -16,7 +16,7 @@ const AppLayout = ({ children }) => {
 };
 
 function App() {
-  
+ 
 
   return (
     <Routes>
@@ -25,6 +25,7 @@ function App() {
         element={
           <AppLayout>
             <MainContent />
+           
             <Outlet />
           </AppLayout>
         }

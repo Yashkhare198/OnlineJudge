@@ -7,23 +7,17 @@ const Main = () => {
     const [dynamicText, setDynamicText] = useState("Sharpen your coding skills!");
 
     useEffect(() => {
-        // Implement a dynamic text change after a delay
+
         const textChangeInterval = setInterval(() => {
             setDynamicText("Solve problems, explore, and excel!");
         }, 2000);
 
         return () => {
-            clearInterval(textChangeInterval); // Clean up the interval on unmount
+            clearInterval(textChangeInterval); 
         };
     }, []);
 
-    // // State to control whether the login window is visible
-    // const [showLogin, setShowLogin] = useState(false);
-
-    // // Function to show the login window
-    // const showLoginWindow = () => {
-    //     setShowLogin(true);
-    // };
+   
 
     return (
         <div className="bg-gradient-to-br from-blue-300 to-blue-500 h-screen flex items-center">

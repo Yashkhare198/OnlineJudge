@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { User, validate } = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken"); // Import the jsonwebtoken library
 
 router.post("/", async (req, res) => {
 	try {
@@ -12,14 +13,18 @@ router.post("/", async (req, res) => {
 		if (user)
 			return res
 				.status(409)
-				.send({ message: "User with given email already Exist!" });
+				.send({ message: "User with given email already exists!" });
 
 		const salt = await bcrypt.genSalt(Number(process.env.SALT));
 		const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-		await new User({ ...req.body, password: hashPassword }).save();
-		res.status(201).send({ message: "User created successfully" });
+		const newUser = new User({ ...req.body, password: hashPassword });
+		await newUser.save();
+
+		const token = jwt.sign({ userId: newUser.id, email: newUser.email }, process.env.JWT_PRIVATE_KEY); // Sign the JWT
+		res.status(201).send({ data: token, message: "User created successfully" });
 	} catch (error) {
+		console.error("Error:", error);
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 });
