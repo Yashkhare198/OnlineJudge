@@ -1,4 +1,4 @@
-# Online Judge💻 [🔗Live Link]()
+# Online Judge💻 [🔗Live Link](http://ec2-52-62-165-113.ap-southeast-2.compute.amazonaws.com/)
 
 An online judge is an online system to test programs in programming contests or for practicing Data structure & Algorithms’ knowledge through problems. The system can compile and execute your code, and test your code with pre-constructed data called test-cases. Submitted code may be run with restrictions, including time limit, memory limit, security restriction, and so on. The output of the code will be captured by the system, and compared with the standard output. The system will then return the verdict as Accepted, Wrong Answer or different message based on evaluation.
 
