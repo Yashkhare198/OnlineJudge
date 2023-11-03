@@ -6,8 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 const AddProblemForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [testCases, setTestCases] = useState("");
+  // const [testCases, setTestCases] = useState("");
   const [level, setLevel] = useState("");
+  const [input, setInput] = useState("");
+  const [output,setOutput] = useState("");
   const [problemNo, setProblemNo] = useState(null);
 
   // Function to fetch the problem number
@@ -30,7 +32,9 @@ const AddProblemForm = () => {
       const formData = {
         title,
         description,
-        testCases,
+      
+        input,
+        output,
         level,
         creator: localStorage.getItem("userId"),
       };
@@ -47,7 +51,9 @@ const AddProblemForm = () => {
         // Clear the form fields and reset the component state
         setTitle("");
         setDescription("");
-        setTestCases("");
+       
+        setInput("");
+        setOutput("");
         setLevel("");
 
         toast.success("Problem added successfully!");
@@ -97,7 +103,7 @@ const AddProblemForm = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="testCases">
               Test Cases:
             </label>
@@ -106,6 +112,28 @@ const AddProblemForm = () => {
               id="testCases"
               value={testCases}
               onChange={(e) => setTestCases(e.target.value)}
+            />
+          </div> */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
+             Input:
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="output">
+              Output:
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="output"
+              value={output}
+              onChange={(e) => setOutput(e.target.value)}
             />
           </div>
           <div className="mb-4">

@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
     const { title, description, testCases, level, creator } = req.body;
 
     // Fetch the next problem number from the server
-    const nextProblemResponse = await axios.get('http://localhost:8080/api/problems');
+    const nextProblemResponse = await axios.get(`${process.env.REACT_APP_SERVER_PATH}/api/problems`);
     const nextProblemNo = nextProblemResponse.data.nextProblemNo;
 
     const newProblem = new Problem({

@@ -4,6 +4,7 @@ const path = require("path");
 
 const outputPath = path.join(__dirname, "outputs");
 
+
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
@@ -20,41 +21,36 @@ const appendCustomInput = async (filePath, data) => {
   }
 };
 
-const executeCpp = (filepath, input) => {
+
+
+
+const executeCode = (filepath, language, input, timeout) => {
   const jobId = path.basename(filepath).split(".")[0];
   const outPath = path.join(outputPath, `${jobId}.exe`);
   const custominputpath = path.join(outputPath, `${jobId}.input.txt`);
-  console.log(jobId);
-  console.log(input);
-  appendCustomInput(custominputpath, input); // Ensure 'input' is defined
+  const maxBuffer = 1024 * 1024;
+
+  appendCustomInput(custominputpath, input);
 
   return new Promise((resolve, reject) => {
-    const separator = process.platform === "win32" ? "\\" : "/"; // Determine the correct path separator
+    const separator = process.platform === "win32" ? "\\" : "/";
     const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .${separator}${jobId}.exe < "${custominputpath}"`;
 
-    const childProcess = exec(command, (error, stdout, stderr) => {
+    const childProcess = exec(command,{ maxBuffer: maxBuffer }, (error, stdout, stderr) => {
       if (error) {
-        console.error("Error executing command: " + command);
-        console.error(stderr);
         reject({ error, stderr });
       } else {
-        console.log("Executing command: " + command);
-        console.log("Output:");
-        process.stdout.write(stdout);
         resolve(stdout);
       }
     });
 
-    childProcess.stdout.on('data', (data) => {
-      process.stdout.write(data);
-    });
-
-    childProcess.stderr.on('data', (data) => {
-      process.stderr.write(data);
-    });
+    setTimeout(() => {
+      childProcess.kill();
+      reject(`Time Limit Exceeded (TLE)`);
+    }, timeout); // Set the timeout value in milliseconds
   });
 };
 
 module.exports = {
-  executeCpp,
+  executeCode,
 };

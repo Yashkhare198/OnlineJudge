@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,7 +9,9 @@ const EditProblemForm = () => {
   const [problem, setProblem] = useState({
     title: '',
     description: '',
-    testCases: '',
+    // testCases: '',
+    input: '',
+    output: '',
     level: '',
   });
   const [error, setError] = useState(null);
@@ -19,7 +20,7 @@ const EditProblemForm = () => {
   useEffect(() => {
     // Fetch the problem details for editing
     axios
-      .get(`http://localhost:8080/api/problems`)
+      .get(`${process.env.REACT_APP_SERVER_PATH}/api/problems`)
       .then((response) => {
         const specificProblem = response.data.problems.find((x) => x.problemNo === parseInt(problemNo));
 
@@ -28,7 +29,9 @@ const EditProblemForm = () => {
           setProblem({
             title: specificProblem.title || '',
             description: specificProblem.description || '',
-            testCases: specificProblem.testCases || '',
+            // testCases: specificProblem.testCases || '',
+            input:specificProblem.input || '',
+            output:specificProblem.output || '',
             level: specificProblem.level || '',
           });
         } else {
@@ -52,11 +55,7 @@ const EditProblemForm = () => {
         setError(null);
         setSuccess(true);
 
-        
-       
-          navigate(`/problem/${problemNo}`);
-          
-    
+        navigate(`/problem/${problemNo}`);
       } else {
         setError('Error updating problem');
       }
@@ -65,11 +64,12 @@ const EditProblemForm = () => {
       setError('Error updating problem');
     }
   };
-  
+
   return (
-    <div className="w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Edit Problem</h2>
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-indigo-400">
+    <div className=" bg-orange-200 rounded-lg shadow-lg p-4 max-w-md w-full sm:w-2/3 md:w-1/2 lg:w-1/3 overflow-y-auto">
+      <h2 className="text-2xl font-bold mb-4 text-blue-600">Edit Problem</h2>
+      <form >
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
             Title:
@@ -93,7 +93,7 @@ const EditProblemForm = () => {
             onChange={(e) => setProblem({ ...problem, description: e.target.value })}
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="testCases">
             Test Cases:
           </label>
@@ -102,6 +102,28 @@ const EditProblemForm = () => {
             id="testCases"
             value={problem.testCases}
             onChange={(e) => setProblem({ ...problem, testCases: e.target.value })}
+          />
+        </div> */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
+            Input:
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="input"
+            value={problem.input}
+            onChange={(e) => setProblem({ ...problem, input: e.target.value })}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="output">
+            Output:
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="output"
+            value={problem.output}
+            onChange={(e) => setProblem({ ...problem, output: e.target.value })}
           />
         </div>
         <div className="mb-4">
@@ -133,6 +155,8 @@ const EditProblemForm = () => {
         {success && <p className="text-green-500">Problem updated successfully!</p>}
       </form>
     </div>
+    </div>
+    
   );
 };
 
