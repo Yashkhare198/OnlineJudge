@@ -4,5 +4,6 @@
 /server/.env
 /compiler/node_modules
 /compiler/cpp/codes
+CODEHUB_AWS.pem
 /compiler/cpp/outputs
 # /compiler/cpp/inputs

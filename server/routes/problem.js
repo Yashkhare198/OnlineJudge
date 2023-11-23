@@ -53,7 +53,7 @@ router.patch('/:problemNo', async (req, res) => {
 // Create a new problem
 router.post('/', async (req, res) => {
   try {
-    const { title, description, testCases, level, creator } = req.body;
+    const { title, description, input,output, level, creator } = req.body;
 
     // Fetch the next problem number from the server
     const nextProblemResponse = await axios.get(`${process.env.REACT_APP_SERVER_PATH}/api/problems`);
@@ -63,7 +63,8 @@ router.post('/', async (req, res) => {
       problemNo: nextProblemNo, // Use the next problem number
       title,
       description,
-      testCases,
+      input,
+      output,
       level,
       creator,
     });

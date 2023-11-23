@@ -10,7 +10,8 @@ const ProblemDetail = () => {
   const user = localStorage.getItem("userId");
   const { problemNo } = useParams();
   const [problem, setProblem] = useState(null);
-  const [compilerResult, setCompilerResult] = useState(null);
+
+  const [selectedLanguage, setSelectedLanguage] = useState("cpp");
   const [code, setCode] = useState(
     `#include <iostream>\nusing namespace std;\nint main()\n{\n  cout << "Hello World";\n  return 0;\n}`
   );
@@ -26,6 +27,17 @@ const ProblemDetail = () => {
 
   useEffect(() => {
     // Fetch problem details when problemNo changes
+    if(selectedLanguage==='java')
+    {
+      setCode(`public class Main{
+        public static void main(String[] args){
+          System.out.println("Be Creative");
+        }
+      }`);
+    }
+    else{
+      setCode( `#include <iostream>\nusing namespace std;\nint main()\n{\n  cout << "Hello World";\n  return 0;\n}`);
+    }
     const fetchProblemDetails = async () => {
       try {
         const response = await axios.get(
@@ -39,11 +51,11 @@ const ProblemDetail = () => {
           setProblem({
             title: specificProblem.title || "",
             description: specificProblem.description || "",
-            
+
             // testCases: specificProblem.testCases || "",
             level: specificProblem.level || "",
           });
-         
+
           setInput(specificProblem.input);
           setSubInput(specificProblem.input);
           setActualOutput(specificProblem.output);
@@ -60,7 +72,7 @@ const ProblemDetail = () => {
     if (problemNo) {
       fetchProblemDetails();
     }
-  }, [problemNo]);
+  }, [problemNo,selectedLanguage]);
 
   const runCode = async () => {
     if (!user) {
@@ -72,7 +84,7 @@ const ProblemDetail = () => {
         const response = await axios.post(
           `${process.env.REACT_APP_COMPILER_PATH}/api/execution/run`,
           {
-            language: "cpp",
+            language: selectedLanguage,
             input,
             code,
           }
@@ -96,7 +108,7 @@ const ProblemDetail = () => {
       responseData = await axios.post(
         `${process.env.REACT_APP_COMPILER_PATH}/api/execution/submit`,
         {
-          language: "cpp",
+          language: selectedLanguage,
           code: code,
           input: subInput,
           actualOutput: actualOutput,
@@ -147,16 +159,50 @@ const ProblemDetail = () => {
         <p className="text-lg text-gray-600 mt-2 whitespace-pre-wrap">
           Difficulty: {problem.level}
         </p>
-        <p className="text-lg text-stone-900  mt-4 whitespace-pre-wrap">{problem.description}</p>
+        <p className="text-lg text-stone-900  mt-4 whitespace-pre-wrap">
+          {problem.description}
+        </p>
         {/* <p className="text-base text-gray-800 mt-4">
           Test Cases: {problem.testCases}
         </p> */}
       </div>
       <div className="col-span-1 bg-slate-300 p-6 rounded shadow-md">
+        <div className="mb-4" >
+          <label
+            className="block text-gray-700 text-xl font-bold mb-2"
+            htmlFor="selectedLanguage"
+          >
+            Choose a Language:
+          </label>
+          <select
+           className="w-full p-2 border-2 border-black rounded shadow focus:outline-none "
+            id="selectedLanguage"
+            value={selectedLanguage}
+            required
+            onChange={(e) => setSelectedLanguage(e.target.value)}
+          >
+            <option value="cpp">C++</option>
+            <option value="java">Java</option>
+            {/* <option value="Hard">Hard</option> */}
+          </select>
+          {selectedLanguage === "java" && (
+            <p
+              style={{
+                color: "red",
+                fontWeight: "bold",
+                margin: "0rem 0rem 0.5rem 0.0rem",
+              }}
+            >
+              Please keep class name as "public class Main".
+            </p>
+          )}
+        </div>
         <CodeEditor code={code} onChange={handleCodeChange} />
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="font-semibold text-gray-800 whitespace-pre">User Input:</label>
+            <label className="font-semibold text-gray-800 whitespace-pre">
+              User Input:
+            </label>
             <textarea
               rows="5"
               value={input}
@@ -165,7 +211,9 @@ const ProblemDetail = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-800 whitespace-pre">User Output:</label>
+            <label className="font-semibold text-gray-800 whitespace-pre">
+              User Output:
+            </label>
             <textarea
               readOnly
               rows="5"
@@ -201,7 +249,9 @@ const ProblemDetail = () => {
           {verdict === "TLE" && (
             <div className="verdict" style={{ color: "black" }}>
               <span style={{ fontWeight: "bold" }}>VERDICT: </span>
-              <span style={{ color: "red", fontWeight: "bold" }}>TIME LIMIT EXCEEDED</span>
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                TIME LIMIT EXCEEDED
+              </span>
             </div>
           )}
 

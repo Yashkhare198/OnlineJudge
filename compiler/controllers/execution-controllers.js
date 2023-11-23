@@ -4,10 +4,12 @@ const { executeCode } = require("../codeExecution/executeCode");
 
 const runProgram = async (req, res, next) => {
   const { language, input, code } = req.body;
+  if (!language || !code || !input) {
+    const error = new HttpError("Missing required fields.", 400);
+    return next(error);
+  }
   try {
-    if (code === undefined)
-      return res.status(404).json({ success: false, error: "empty code" });
-    if (language === "cpp") {
+    
       const filePath = await generateFile(language, code);
       if (!filePath) {
         const error = new HttpError("Failed to generate code file", 500);
@@ -16,11 +18,13 @@ const runProgram = async (req, res, next) => {
 
       const timeout = 3000; // Set the timeout to 3 seconds (adjust as needed)
       const output = await executeCode(filePath, language, input, timeout);
-
+      if (output.trim() === "Time Limit Exceeded (TLE)") {
+        throw err;
+      }
      
         res.status(200).json({ output: output.trim() });
       
-    }
+    
   } catch (err) {
     console.error(err);
     const error = new HttpError("Compilation failed, please try again.", 500);

@@ -32,7 +32,6 @@ const AddProblemForm = () => {
       const formData = {
         title,
         description,
-      
         input,
         output,
         level,

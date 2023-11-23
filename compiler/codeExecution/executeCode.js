@@ -4,7 +4,6 @@ const path = require("path");
 
 const outputPath = path.join(__dirname, "outputs");
 
-
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
@@ -21,9 +20,6 @@ const appendCustomInput = async (filePath, data) => {
   }
 };
 
-
-
-
 const executeCode = (filepath, language, input, timeout) => {
   const jobId = path.basename(filepath).split(".")[0];
   const outPath = path.join(outputPath, `${jobId}.exe`);
@@ -32,24 +28,37 @@ const executeCode = (filepath, language, input, timeout) => {
 
   appendCustomInput(custominputpath, input);
 
-  return new Promise((resolve, reject) => {
+  
     const separator = process.platform === "win32" ? "\\" : "/";
-    const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .${separator}${jobId}.exe < "${custominputpath}"`;
+    const command = {
+      cpp: [
+        `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .${separator}${jobId}.exe < "${custominputpath}"`,
+      ],
+      py: [`python ${filepath} < ${custominputpath}`],
+      java: [`java "${filepath}" < "${custominputpath}"`],
+    };
 
-    const childProcess = exec(command,{ maxBuffer: maxBuffer }, (error, stdout, stderr) => {
-      if (error) {
-        reject({ error, stderr });
-      } else {
-        resolve(stdout);
-      }
+    return new Promise((resolve, reject) => {
+      const executeCode = exec(
+        command[language][0],
+        (error, stdout, stderr) => {
+          if (error) {
+            reject(error);
+          }
+          if (stderr) {
+            reject(stderr);
+          }
+          //   console.log(stdout);
+          resolve(stdout);
+        }
+      );
+      // executeCode.stdin.end();
+      setTimeout(() => {
+        executeCode.kill();
+        reject(`Time Limit Exceeded (TLE)`);
+      }, timeout);
     });
-
-    setTimeout(() => {
-      childProcess.kill();
-      reject(`Time Limit Exceeded (TLE)`);
-    }, timeout); // Set the timeout value in milliseconds
-  });
-};
+  };
 
 module.exports = {
   executeCode,
